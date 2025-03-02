@@ -29,6 +29,14 @@ namespace OnlineLearningWebAPI.Repository
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Course>> SearchCoursesAsync(string keyword)
+        {
+            return await _context.Courses
+                .Where(c => c.CourseTitle.Contains(keyword))
+                .Include(c => c.Category)
+                .ToListAsync();
+        }
+
         public async Task<bool> UpdateStatusAsync(List<int> ids, CourseStatus status)
         {
             var effectRows = await _context.Courses.Where(x => ids.Contains(x.CourseId)).ExecuteUpdateAsync(x => x.SetProperty(c => c.Status, status));

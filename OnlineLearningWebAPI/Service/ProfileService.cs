@@ -21,31 +21,6 @@ namespace OnlineLearningWebAPI.Service
 
         public async Task<GeneralResponse> AddNewProfile(AddProfileRequest request)
         {
-            Account account = await _accountRepository.GetByIdAsync(request.AccountId);
-
-            if(account == null)
-            {
-                return new GeneralResponse(false, "Can not find acocunt");
-            }
-
-            Profile profile = new Profile()
-            {
-                Account = account,
-                Address = request.Address,
-                Avatar = request.Avatar,
-                IsVIP = request.IsVIP,
-                UserName = request.UserName,
-            };
-
-            try
-            {
-                await _profileRepository.AddAsync(profile);
-                await _profileRepository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                return new GeneralResponse(false, ex.Message);
-            }
 
             return new GeneralResponse(true, "Profile added");
         }

@@ -8,6 +8,6 @@ namespace OnlineLearningWebAPI.DTOs.request.ProfileRequest
         public string? Avatar { get; set; }
         public string? Address { get; set; }
         public bool? IsVIP { get; set; } = false;
-        public int AccountId { get; set; }
+        public string? AccountId { get; set; }
     }
 }

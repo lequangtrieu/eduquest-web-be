@@ -30,30 +30,5 @@ namespace OnlineLearningWebAPI.Controllers
             return Ok(profile);
         }
 
-        // PUT: api/teachers/{id}
-        [HttpPut]
-        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest updateProfileDTO)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            GeneralResponse response = await _profileService.UpdateProfile(updateProfileDTO);
-
-            if (!response.Flag) return NotFound(new { message = "[ProfileController] | UpdateProfile |" + response.Message });
-
-            return Ok(response);
-        }
-
-        // PUT: api/teachers/{id}
-        [HttpPost]
-        public async Task<IActionResult> PostProfile([FromBody] AddProfileRequest addProfileDTO)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            GeneralResponse response = await _profileService.AddNewProfile(addProfileDTO);
-
-            if (!response.Flag) return NotFound(new { message = "[ProfileController] | PostProfile |" + response.Message });
-
-            return Ok(response);
-        }
     }
 }

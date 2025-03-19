@@ -1,5 +1,5 @@
-using OnlineLearningWebAPI.Configurations;
 using System.Text.Json;
+using OnlineLearningWebAPI.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 var allowedOrigins = builder.Configuration.GetValue<string>("CorsSettings:AllowedOrigins");
@@ -7,21 +7,21 @@ var allowedOrigins = builder.Configuration.GetValue<string>("CorsSettings:Allowe
 // Accept CORS API REACT
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp", policy =>
-    {
-        policy.WithOrigins("http://localhost:3000")
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
-    });
+	options.AddPolicy("AllowReactApp", policy =>
+	{
+		policy.WithOrigins("http://localhost:3000")
+			  .AllowAnyMethod()
+			  .AllowAnyHeader()
+			  .AllowCredentials();
+	});
 });
 
 builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.IgnoreNullValues = true;
-        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-    });
+	.AddJsonOptions(options =>
+	{
+		options.JsonSerializerOptions.IgnoreNullValues = true;
+		options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+	});
 
 
 //// Add services to the container.
@@ -51,8 +51,13 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
+	app.UseSwaggerUI(options =>
+	{
+		options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+		options.RoutePrefix = string.Empty;
+	});
 }
 
 app.UseCors("AllowReactApp");

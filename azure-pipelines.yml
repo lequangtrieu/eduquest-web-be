@@ -1,0 +1,50 @@
+trigger:
+- main  # Chạy pipeline khi có thay đổi trên nhánh "main"
+
+pool:
+  name: 'TrieuLQAgent'  # Tên Agent Pool bạn đã cấu hình
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  projectPath: '**/*.csproj'  # Chỉ định dự án API
+  publishDir: '$(Build.ArtifactStagingDirectory)/publish'  # Thư mục lưu output sau publish
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.x'  # Sử dụng .NET 8.0
+
+- task: NuGetCommand@2
+  displayName: 'Restore NuGet Packages'
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Solution'
+  inputs:
+    command: 'build'
+    projects: '$(projectPath)'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run Unit Tests'
+  inputs:
+    command: 'test'
+    projects: '$(projectPath)'
+    arguments: '--configuration $(buildConfiguration) --no-build'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish API'
+  inputs:
+    command: 'publish'
+    projects: '$(projectPath)'
+    arguments: '--configuration $(buildConfiguration) --output $(publishDir) --no-build'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Upload Build Artifact'
+  inputs:
+    pathToPublish: '$(publishDir)'
+    artifactName: 'drop'

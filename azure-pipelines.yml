@@ -8,7 +8,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  projectPath: 'src/OnlineLearningWebAPI/OnlineLearningWebAPI.csproj'  # Chỉ định dự án API
+  projectPath: '**/*.csproj'  # Chỉ định dự án API
   publishDir: '$(Build.ArtifactStagingDirectory)/publish'  # Thư mục lưu output sau publish
 
 steps:

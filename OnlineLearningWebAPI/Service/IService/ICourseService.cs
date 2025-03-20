@@ -12,6 +12,8 @@ namespace OnlineLearningWebAPI.Service.IService
         Task<bool> DeleteCourseAsync(int id);
         Task<IEnumerable<CourseDTO>> GetCoursesByTeacherIdAsync(string teacherId);
         Task<IEnumerable<CourseDTO>> GetCoursesByCategoryIdAsync(int categoryId);
+        Task<IEnumerable<CourseDTO>> SearchCoursesAsync(string key);
         Task<bool> ApproveCourseAsync(int id);
+        Task<bool> UnApproveCourseAsync(int id);
     }
 }

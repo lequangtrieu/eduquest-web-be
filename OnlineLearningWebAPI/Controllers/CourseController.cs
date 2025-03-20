@@ -59,11 +59,29 @@ namespace OnlineLearningWebAPI.Controllers
             return Ok(new { message = "Course deleted successfully" });
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchCourses([FromQuery] string keyword)
+        {
+            var courses = await _courseService.SearchCoursesAsync(keyword);
+            if (courses == null || !courses.Any())
+                return NotFound(new { message = "No courses found" });
+
+            return Ok(courses);
+        }
+
         [HttpPut("approve/{id}")]
-        [Authorize(Policy = "RequireAdminRole")]
         public async Task<IActionResult> ApproveCourse(int id)
         {
             var result = await _courseService.ApproveCourseAsync(id);
+            if (!result) return BadRequest(new { message = "Course not found or not pending" });
+
+            return Ok(new { message = "Course approved successfully" });
+        }
+
+        [HttpPut("unapprove/{id}")]
+        public async Task<IActionResult> UnApproveCourse(int id)
+        {
+            var result = await _courseService.UnApproveCourseAsync(id);
             if (!result) return BadRequest(new { message = "Course not found or not pending" });
 
             return Ok(new { message = "Course approved successfully" });

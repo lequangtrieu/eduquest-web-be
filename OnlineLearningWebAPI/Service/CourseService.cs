@@ -1,4 +1,5 @@
-﻿using OnlineLearningWebAPI.DTOs.request.CourseRequest;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineLearningWebAPI.DTOs.request.CourseRequest;
 using OnlineLearningWebAPI.DTOs.Response.CourseResponse;
 using OnlineLearningWebAPI.Models;
 using OnlineLearningWebAPI.Repository.IRepository;
@@ -140,14 +141,39 @@ namespace OnlineLearningWebAPI.Service
             });
         }
 
+        public async Task<IEnumerable<CourseDTO>> SearchCoursesAsync(string keyword)
+        {
+            var courses = await _courseRepository.SearchCoursesAsync(keyword);
+            return courses.Select(c => new CourseDTO
+            {
+                CourseId = c.CourseId,
+                CourseTitle = c.CourseTitle,
+                Description = c.Description,
+                CategoryName = c.Category?.Name,
+                Price = c.Price,
+                Status = c.Status,
+                ImageURL = c.ImageURL
+            });
+        }
+
         public async Task<bool> ApproveCourseAsync(int id)
         {
             var course = await _courseRepository.GetByIdAsync(id);
-            if(course == null || course.Status != Enum.CourseStatus.Pending)
+            if (course == null || course.Status != Enum.CourseStatus.Pending)
             {
                 return false;
             }
             return await _courseRepository.UpdateStatusAsync([id], Enum.CourseStatus.Approved);
+        }
+
+        public async Task<bool> UnApproveCourseAsync(int id)
+        {
+            var course = await _courseRepository.GetByIdAsync(id);
+            if (course == null || course.Status != Enum.CourseStatus.Approved)
+            {
+                return false;
+            }
+            return await _courseRepository.UpdateStatusAsync([id], Enum.CourseStatus.Pending);
         }
     }
 }

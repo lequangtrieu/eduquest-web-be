@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OnlineLearningWebAPI.Configurations;
 using OnlineLearningWebAPI.DTOs.request.AccountRequest;
+using OnlineLearningWebAPI.DTOs.request.ProfileRequest;
 using OnlineLearningWebAPI.Models;
 using OnlineLearningWebAPI.Service.IService;
 
@@ -55,6 +56,31 @@ namespace OnlineLearningWebAPI.Controllers
             });
         }
 
+        [HttpPut("profile")]
+        public async Task<IActionResult> UpdateProfileAvatar([FromBody] AddProfileRequest addProfileDTO)
+        {
+
+            var user = await _userManager.FindByIdAsync(addProfileDTO.AccountId);
+
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            user.Avatar = addProfileDTO.Avatar;
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(new { message = "Failed to update avatar" });
+            }
+
+            return Ok(new
+            {
+                message = "Avatar updated successfully",
+            });
+        }
+
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
@@ -78,7 +104,7 @@ namespace OnlineLearningWebAPI.Controllers
 
             // Tạo token
             var token = GenerateJwtToken(user);
-            return Ok(new { Token = token });
+            return Ok(new { Token = token,Avatar = user.Avatar });
         }
 
         [HttpPost("register")]

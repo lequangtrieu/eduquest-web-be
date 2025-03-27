@@ -8,5 +8,6 @@ namespace OnlineLearningWebAPI.Repository.IRepository
         Task<IEnumerable<Course>> GetCoursesByTeacherIdAsync(string teacherId);
         Task<IEnumerable<Course>> GetCoursesByCategoryIdAsync(int categoryId);
         Task<bool> UpdateStatusAsync(List<int> ids, CourseStatus status);
+        Task<IEnumerable<Course>> SearchCoursesAsync(string keyword);
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OnlineLearningWebAPI.DTOs.request.CourseRequest;
 using OnlineLearningWebAPI.Service.IService;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 namespace OnlineLearningWebAPI.Controllers
 {
@@ -33,8 +34,17 @@ namespace OnlineLearningWebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCourse([FromBody] CreateCourseDTO createCourseDTO)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> CreateCourse([FromForm] CreateCourseDTO createCourseDTO)
         {
+            if (createCourseDTO.Image == null || createCourseDTO.Image.Length == 0)
+            {
+                return BadRequest("Image required.");
+            }
+
+            bool isValidFile = Helper.ValidationHelper.IsValidImage(createCourseDTO.Image);
+            if (!isValidFile)
+                return BadRequest("Invalid image file. File format allowed: .jpg, .jpeg, .png");
             var result = await _courseService.CreateCourseAsync(createCourseDTO);
             if (!result) return BadRequest(new { message = "Failed to create course" });
 

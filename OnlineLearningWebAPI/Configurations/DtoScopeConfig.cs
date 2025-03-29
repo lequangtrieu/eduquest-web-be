@@ -12,6 +12,8 @@ namespace OnlineLearningWebAPI.Configurations
             services.AddDbContext<OnlineLearningDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging(false));
 
+            services.Configure<FirebaseConfigure>(builder.Configuration.GetSection("Firebase"));
+
             services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 
             services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));

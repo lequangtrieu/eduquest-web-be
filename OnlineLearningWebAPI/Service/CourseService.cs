@@ -13,12 +13,17 @@ namespace OnlineLearningWebAPI.Service
         private readonly ICourseRepository _courseRepository;
         private readonly ICourseTagService _courseTagService;
         private readonly ICourseCategoryService _courseCategoryService;
+        private readonly IImageService _imageService;
 
-        public CourseService(ICourseRepository courseRepository, ICourseTagService courseTagService, ICourseCategoryService courseCategoryService)
+        public CourseService(ICourseRepository courseRepository, 
+            ICourseTagService courseTagService, 
+            ICourseCategoryService courseCategoryService, 
+            IImageService imageService)
         {
             _courseRepository = courseRepository;
             _courseTagService = courseTagService;
             _courseCategoryService = courseCategoryService;
+            _imageService = imageService;
         }
 
         public async Task<IEnumerable<CourseDTO>> GetAllCoursesAsync()
@@ -63,6 +68,7 @@ namespace OnlineLearningWebAPI.Service
 
         public async Task<bool> CreateCourseAsync(CreateCourseDTO createCourseDTO)
         {
+            string imageUrl = await _imageService.UploadImage(createCourseDTO.Image);
             var course = new Course
             {
                 CourseTitle = createCourseDTO.CourseTitle,
@@ -70,7 +76,8 @@ namespace OnlineLearningWebAPI.Service
                 TeacherId = createCourseDTO.TeacherId,
                 CategoryId = createCourseDTO.CategoryId,
                 Price = createCourseDTO.Price,
-                ImageURL = createCourseDTO.ImageURL
+                CreateDate = DateOnly.FromDateTime(DateTime.Now),
+                ImageURL = imageUrl
             };
 
             await _courseRepository.AddAsync(course);
@@ -80,13 +87,19 @@ namespace OnlineLearningWebAPI.Service
 
         public async Task<bool> UpdateCourseAsync(int id, UpdateCourseDTO updateCourseDTO)
         {
+            string? imageUrl = null;
+            if (updateCourseDTO.Image != null)
+            {
+                imageUrl = await _imageService.UploadImage(updateCourseDTO.Image);
+            }
+
             var course = await _courseRepository.GetByIdAsync(id);
             if (course == null) return false;
 
             course.CourseTitle = updateCourseDTO.CourseTitle ?? course.CourseTitle;
             course.Description = updateCourseDTO.Description ?? course.Description;
             course.CategoryId = updateCourseDTO.CategoryId ?? course.CategoryId;
-            course.ImageURL = updateCourseDTO.ImageURL ?? course.ImageURL;
+            course.ImageURL = imageUrl ?? course.ImageURL;
             course.Price = updateCourseDTO?.Price ?? course.Price;
             course.TeacherId = updateCourseDTO?.TeacherId ?? course.TeacherId;
             course.Status = updateCourseDTO?.Status ?? course.Status;

@@ -1,5 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OnlineLearningWebAPI.DTOs.ExamTestRequest;
+using OnlineLearningWebAPI.DTOs.QuizAnswerRequest;
+using OnlineLearningWebAPI.DTOs.QuizRequest;
 using OnlineLearningWebAPI.DTOs.request.CourseRequest;
+using OnlineLearningWebAPI.DTOs.request.MoocRequest;
 using OnlineLearningWebAPI.DTOs.Response.CourseResponse;
 using OnlineLearningWebAPI.Models;
 using OnlineLearningWebAPI.Repository.IRepository;
@@ -13,17 +17,23 @@ namespace OnlineLearningWebAPI.Service
         private readonly ICourseRepository _courseRepository;
         private readonly ICourseTagService _courseTagService;
         private readonly ICourseCategoryService _courseCategoryService;
-        private readonly IImageService _imageService;
+        private readonly IFirebaseService _imageService;
+        private readonly IMoocService _moocService;
+        private readonly IExamTestService _examTestService;
 
         public CourseService(ICourseRepository courseRepository, 
             ICourseTagService courseTagService, 
             ICourseCategoryService courseCategoryService, 
-            IImageService imageService)
+            IFirebaseService imageService,
+            IMoocService moocService,
+            IExamTestService examTestService)
         {
             _courseRepository = courseRepository;
             _courseTagService = courseTagService;
             _courseCategoryService = courseCategoryService;
             _imageService = imageService;
+            _moocService = moocService;
+            _examTestService = examTestService;
         }
 
         public async Task<IEnumerable<CourseDTO>> GetAllCoursesAsync()
@@ -66,6 +76,36 @@ namespace OnlineLearningWebAPI.Service
             };
         }
 
+        public async Task<FullCourseDTO?> GetFullCourseByIdAsync(int id)
+        {
+            var course = await _courseRepository.GetByIdAsync(id);
+            var courseTags = await _courseTagService.GetTagsByCourseIdAsync(id);
+            var courseMooc = await _moocService.GetMoocsByCourseIdAsync(course.CourseId);
+            var categories = await _courseCategoryService.GetAllCategoriesAsync();
+
+            if (course == null) return null;
+            var result = new FullCourseDTO
+            {
+                CourseId = course.CourseId,
+                CourseTitle = course.CourseTitle,
+                Description = course.Description,
+                TeacherId = course.TeacherId,
+                CreateDate = course.CreateDate,
+                Price = course.Price,
+                CategoryName = categories.First(cate => cate.CategoryId == course.CategoryId).Name,
+                ImageURL = course.ImageURL,
+                Status = course.Status,
+                CourseTags = courseTags,
+            };
+
+            if (courseMooc.Any())
+            {
+                var examTests = await _examTestService.GetExamTestsByMoocIdAsync(courseMooc.First().MoocId);
+                result.ExamTests = examTests;
+            }
+            return result;
+        }
+
         public async Task<bool> CreateCourseAsync(CreateCourseDTO createCourseDTO)
         {
             string imageUrl = await _imageService.UploadImage(createCourseDTO.Image);
@@ -83,6 +123,36 @@ namespace OnlineLearningWebAPI.Service
             await _courseRepository.AddAsync(course);
             await _courseRepository.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<int> CreateCourseAndMoocAsync(CreateCourseDTO createCourseDTO)
+        {
+            string imageUrl = await _imageService.UploadImage(createCourseDTO.Image);
+            var course = new Course
+            {
+                CourseTitle = createCourseDTO.CourseTitle,
+                Description = createCourseDTO.Description,
+                TeacherId = createCourseDTO.TeacherId,
+                CategoryId = createCourseDTO.CategoryId,
+                Price = createCourseDTO.Price,
+                CreateDate = DateOnly.FromDateTime(DateTime.Now),
+                ImageURL = imageUrl
+            };
+
+            await _courseRepository.AddAsync(course);
+            await _courseRepository.SaveChangesAsync();
+
+            var mooc = new CreateMoocDTO
+            {
+                CourseId = course.CourseId,
+                Description = course.Description,
+                IsPublic = true,
+                CreateDate = DateOnly.FromDateTime(DateTime.Now)
+            };
+            var moocId = await _moocService.CreateMoocGetIdAsync(mooc);
+
+            Console.WriteLine(moocId);
+            return moocId;
         }
 
         public async Task<bool> UpdateCourseAsync(int id, UpdateCourseDTO updateCourseDTO)
@@ -114,6 +184,14 @@ namespace OnlineLearningWebAPI.Service
             var course = await _courseRepository.GetByIdAsync(id);
             if (course == null) return false;
 
+            var moocs = await _moocService.GetMoocsByCourseIdAsync(course.CourseId);
+            if(moocs.Any())
+            {
+                foreach (var mooc in moocs)
+                {
+                    await _moocService.DeleteMoocAsync(mooc.MoocId);
+                }
+            }
             _courseRepository.Delete(course);
             await _courseRepository.SaveChangesAsync();
             return true;

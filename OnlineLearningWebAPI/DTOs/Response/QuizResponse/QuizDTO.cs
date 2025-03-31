@@ -1,4 +1,6 @@
-﻿namespace OnlineLearningWebAPI.DTOs.Response.QuizResponse
+﻿using OnlineLearningWebAPI.DTOs.Response.QuizAnswerResponse;
+
+namespace OnlineLearningWebAPI.DTOs.Response.QuizResponse
 {
     public class QuizDTO
     {
@@ -8,5 +10,6 @@
         public string? QuizQuestion { get; set; }
         public int QuizTypeId { get; set; }
         public int MaxScore { get; set; }
+        public IEnumerable<QuizAnswerDTO>? Answers { get; set; }
     }
 }

@@ -135,8 +135,23 @@ public partial class OnlineLearningDbContext : IdentityDbContext<Account>
 		new CourseCategory { CategoryId = 2, Name = "Programming Languages" },
 		new CourseCategory { CategoryId = 3, Name = "Web Development" },
 		new CourseCategory { CategoryId = 4, Name = "Data Science" },
-		new CourseCategory { CategoryId = 5, Name = "Cybersecurity" }
-	);
+		new CourseCategory { CategoryId = 5, Name = "Cybersecurity" },
+		new CourseCategory { CategoryId = 6, Name = "Machine Learning" },
+		new CourseCategory { CategoryId = 7, Name = "Cloud Computing" },
+		new CourseCategory { CategoryId = 8, Name = "Mobile Development" },
+		new CourseCategory { CategoryId = 9, Name = "Database Management" },
+		new CourseCategory { CategoryId = 10, Name = "DevOps" },
+		new CourseCategory { CategoryId = 11, Name = "Blockchain" },
+        new CourseCategory { CategoryId = 12, Name = "Internet of Things (IoT)" },
+        new CourseCategory { CategoryId = 13, Name = "UI/UX Design" },
+        new CourseCategory { CategoryId = 14, Name = "Game Development" },
+        new CourseCategory { CategoryId = 15, Name = "Networking" },
+        new CourseCategory { CategoryId = 16, Name = "Business Intelligence" },
+        new CourseCategory { CategoryId = 17, Name = "Virtual Reality (VR)" },
+        new CourseCategory { CategoryId = 18, Name = "Augmented Reality (AR)" },
+        new CourseCategory { CategoryId = 19, Name = "IT Project Management" },
+        new CourseCategory { CategoryId = 20, Name = "Agile & Scrum" }
+    );
 
 		modelBuilder.Entity<Course>().HasData(
 			new Course
@@ -193,6 +208,14 @@ public partial class OnlineLearningDbContext : IdentityDbContext<Account>
 				CategoryId = 5,
 				Status = CourseStatus.Pending,
 				Price = 30000
+			}
+		);
+
+		modelBuilder.Entity<QuizType>().HasData(
+			new QuizType
+			{
+				QuizTypeId = 1,
+				TypeName = "Single"
 			}
 		);
 

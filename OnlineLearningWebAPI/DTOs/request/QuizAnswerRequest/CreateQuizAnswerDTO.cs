@@ -6,4 +6,10 @@
         public string? Answer { get; set; }
         public bool? IsCorrect { get; set; }
     }
+
+    public class CreateItemQuizAnswerDTO
+    {
+        public string? Answer { get; set; }
+        public bool? IsCorrect { get; set; }
+    }
 }

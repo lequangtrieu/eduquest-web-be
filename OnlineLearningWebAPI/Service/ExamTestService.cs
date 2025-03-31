@@ -9,10 +9,16 @@ namespace OnlineLearningWebAPI.Service
     public class ExamTestService : IExamTestService
     {
         private readonly IExamTestRepository _examTestRepository;
+        private readonly IQuizService _quizService;
+        private readonly IFirebaseService _firebaseService;
 
-        public ExamTestService(IExamTestRepository examTestRepository)
+        public ExamTestService(IExamTestRepository examTestRepository,
+            IQuizService quizService,
+            IFirebaseService firebaseService)
         {
             _examTestRepository = examTestRepository;
+            _quizService = quizService;
+            _firebaseService = firebaseService;
         }
 
         public async Task<IEnumerable<ExamTestDTO>> GetAllExamTestsAsync()
@@ -53,6 +59,12 @@ namespace OnlineLearningWebAPI.Service
                 CreatedBy = createExamTestDTO.CreatedBy
             };
 
+            if (createExamTestDTO.Video != null)
+            {
+                string videoUrl = await _firebaseService.UploadVideo(createExamTestDTO.Video);
+                examTest.VideoUrl = videoUrl;
+            }
+
             await _examTestRepository.AddAsync(examTest);
             await _examTestRepository.SaveChangesAsync();
             return true;
@@ -76,6 +88,14 @@ namespace OnlineLearningWebAPI.Service
             var examTest = await _examTestRepository.GetByIdAsync(id);
             if (examTest == null) return false;
 
+            var quizzes = await _quizService.GetQuizzesByExamTestIdAsync(examTest.ExamTestId);
+            if(quizzes.Any())
+            {
+                foreach (var quizz in quizzes)
+                {
+                    await _quizService.DeleteQuizAsync(quizz.QuizId);
+                }
+            }
             _examTestRepository.Delete(examTest);
             await _examTestRepository.SaveChangesAsync();
             return true;
@@ -90,8 +110,31 @@ namespace OnlineLearningWebAPI.Service
                 MoocId = e.MoocId,
                 TestName = e.TestName,
                 Duration = e.Duration,
-                CreatedBy = e.CreatedBy
+                CreatedBy = e.CreatedBy,
+                VideoURL = e.VideoUrl,
+                IsQuiz = e.VideoUrl == null
             });
+        }
+
+        public async Task<int> CreateExamTestGetIdAsync(CreateExamTestDTO createExamTestDTO)
+        {
+            var examTest = new ExamTest
+            {
+                MoocId = createExamTestDTO.MoocId,
+                TestName = createExamTestDTO.TestName,
+                Duration = createExamTestDTO.Duration,
+                CreatedBy = createExamTestDTO.CreatedBy
+            };
+
+            if (createExamTestDTO.Video != null)
+            {
+                string videoUrl = await _firebaseService.UploadVideo(createExamTestDTO.Video);
+                examTest.VideoUrl = videoUrl;
+            }
+
+            await _examTestRepository.AddAsync(examTest);
+            await _examTestRepository.SaveChangesAsync();
+            return examTest.ExamTestId;
         }
     }
 }

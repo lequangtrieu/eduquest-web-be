@@ -8,6 +8,7 @@ namespace OnlineLearningWebAPI.Service.IService
         Task<IEnumerable<QuizDTO>> GetAllQuizzesAsync();
         Task<QuizDTO?> GetQuizByIdAsync(int id);
         Task<bool> CreateQuizAsync(CreateQuizDTO createQuizDTO);
+        Task<int> CreateQuizGetIdAsync(CreateQuizDTO createQuizDTO);
         Task<bool> UpdateQuizAsync(int id, UpdateQuizDTO updateQuizDTO);
         Task<bool> DeleteQuizAsync(int id);
         Task<IEnumerable<QuizDTO>> GetQuizzesByExamTestIdAsync(int examTestId);

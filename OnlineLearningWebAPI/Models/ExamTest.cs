@@ -12,6 +12,7 @@ public partial class ExamTest
     public string? TestName { get; set; }
 
     public int Duration { get; set; }
+    public string? VideoUrl { get; set; }
 
     public string CreatedBy { get; set; }
 

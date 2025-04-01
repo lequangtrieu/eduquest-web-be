@@ -12,7 +12,7 @@ using OnlineLearningWebAPI.Data;
 namespace OnlineLearningWebAPI.Migrations
 {
     [DbContext(typeof(OnlineLearningDbContext))]
-    [Migration("20250330103112_UpdateExamTest")]
+    [Migration("20250401034810_UpdateExamTest")]
     partial class UpdateExamTest
     {
         /// <inheritdoc />
@@ -275,7 +275,7 @@ namespace OnlineLearningWebAPI.Migrations
                             Id = "1",
                             AccessFailedCount = 0,
                             Avatar = "admin.png",
-                            ConcurrencyStamp = "46aa2e9d-ad6e-43fd-93be-de827e613f50",
+                            ConcurrencyStamp = "5ae7c476-842c-460d-98f3-171bf58e02d8",
                             Email = "admin@example.com",
                             EmailConfirmed = false,
                             IsBan = false,
@@ -283,7 +283,7 @@ namespace OnlineLearningWebAPI.Migrations
                             LockoutEnabled = false,
                             PasswordHash = "Aa1234@",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2b7c0f75-03b1-4bcc-ba78-06219a2591b8",
+                            SecurityStamp = "30771bee-0c21-47c3-ae91-1da3365346d4",
                             TwoFactorEnabled = false,
                             UserName = "admin_user"
                         },
@@ -292,7 +292,7 @@ namespace OnlineLearningWebAPI.Migrations
                             Id = "2",
                             AccessFailedCount = 0,
                             Avatar = "student.png",
-                            ConcurrencyStamp = "71bff19b-ce20-4fad-a984-56bf1f3404a0",
+                            ConcurrencyStamp = "58442058-d272-4f90-a7a1-5d69b36e0001",
                             Email = "student@example.com",
                             EmailConfirmed = false,
                             IsBan = false,
@@ -300,7 +300,7 @@ namespace OnlineLearningWebAPI.Migrations
                             LockoutEnabled = false,
                             PasswordHash = "Aa1234@",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f99e4902-8923-480f-9f98-46f9f7cd89fe",
+                            SecurityStamp = "e8c22976-b599-4b78-b1f1-3d6b244fc779",
                             TwoFactorEnabled = false,
                             UserName = "student_user"
                         });
@@ -429,7 +429,7 @@ namespace OnlineLearningWebAPI.Migrations
                             CourseId = 1,
                             CategoryId = 1,
                             CourseTitle = "Introduction to AI",
-                            CreateDate = new DateOnly(2025, 3, 30),
+                            CreateDate = new DateOnly(2025, 4, 1),
                             Description = "Learn the fundamentals of Artificial Intelligence.",
                             Price = 10000,
                             Status = 0,
@@ -440,7 +440,7 @@ namespace OnlineLearningWebAPI.Migrations
                             CourseId = 2,
                             CategoryId = 2,
                             CourseTitle = "Advanced Python Programming",
-                            CreateDate = new DateOnly(2025, 2, 28),
+                            CreateDate = new DateOnly(2025, 3, 2),
                             Description = "Master Python with advanced concepts and libraries.",
                             Price = 15000,
                             Status = 1,
@@ -451,7 +451,7 @@ namespace OnlineLearningWebAPI.Migrations
                             CourseId = 3,
                             CategoryId = 3,
                             CourseTitle = "Building Modern Web Apps",
-                            CreateDate = new DateOnly(2025, 3, 15),
+                            CreateDate = new DateOnly(2025, 3, 17),
                             Description = "Develop dynamic websites using modern frameworks.",
                             Price = 20000,
                             Status = 0,
@@ -462,7 +462,7 @@ namespace OnlineLearningWebAPI.Migrations
                             CourseId = 4,
                             CategoryId = 4,
                             CourseTitle = "Data Analysis with Python",
-                            CreateDate = new DateOnly(2025, 2, 13),
+                            CreateDate = new DateOnly(2025, 2, 15),
                             Description = "Analyze and visualize data effectively.",
                             Price = 25000,
                             Status = 1,
@@ -473,7 +473,7 @@ namespace OnlineLearningWebAPI.Migrations
                             CourseId = 5,
                             CategoryId = 5,
                             CourseTitle = "Network Security Basics",
-                            CreateDate = new DateOnly(2025, 1, 29),
+                            CreateDate = new DateOnly(2025, 1, 31),
                             Description = "Learn the fundamentals of protecting systems.",
                             Price = 30000,
                             Status = 0,

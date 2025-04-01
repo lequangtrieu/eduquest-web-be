@@ -7,7 +7,9 @@ namespace OnlineLearningWebAPI.Service.IService
     {
         Task<IEnumerable<CourseDTO>> GetAllCoursesAsync();
         Task<CourseDTO?> GetCourseByIdAsync(int id);
+        Task<FullCourseDTO?> GetFullCourseByIdAsync(int id);
         Task<bool> CreateCourseAsync(CreateCourseDTO createCourseDTO);
+        Task<int> CreateCourseAndMoocAsync(CreateCourseDTO createCourseDTO);
         Task<bool> UpdateCourseAsync(int id, UpdateCourseDTO updateCourseDTO);
         Task<bool> DeleteCourseAsync(int id);
         Task<IEnumerable<CourseDTO>> GetCoursesByTeacherIdAsync(string teacherId);

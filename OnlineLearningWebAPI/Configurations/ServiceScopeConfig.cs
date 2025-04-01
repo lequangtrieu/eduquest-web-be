@@ -23,6 +23,8 @@ namespace OnlineLearningWebAPI.Configurations
             services.AddScoped<ICourseEnrollmentRepository, CourseEnrollmentRepository>();
             services.AddScoped<IMoocRepository, MoocRepository>();
 
+            services.AddScoped<IFirebaseService, FirebaseService>();
+
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IProfileService, ProfileService>();
 

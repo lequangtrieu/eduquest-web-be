@@ -8,6 +8,7 @@ namespace OnlineLearningWebAPI.Service.IService
         Task<IEnumerable<ExamTestDTO>> GetAllExamTestsAsync();
         Task<ExamTestDTO?> GetExamTestByIdAsync(int id);
         Task<bool> CreateExamTestAsync(CreateExamTestDTO createExamTestDTO);
+        Task<int> CreateExamTestGetIdAsync(CreateExamTestDTO createExamTestDTO);
         Task<bool> UpdateExamTestAsync(int id, UpdateExamTestDTO updateExamTestDTO);
         Task<bool> DeleteExamTestAsync(int id);
         Task<IEnumerable<ExamTestDTO>> GetExamTestsByMoocIdAsync(int moocId);

@@ -8,10 +8,13 @@ namespace OnlineLearningWebAPI.Service;
 public class MoocService : IMoocService
 {
     private readonly IMoocRepository _moocRepository;
+    private readonly IExamTestService _examTestService;
 
-    public MoocService(IMoocRepository moocRepository)
+    public MoocService(IMoocRepository moocRepository,
+        IExamTestService examTestService)
     {
         _moocRepository = moocRepository;
+        _examTestService = examTestService;
     }
 
     public async Task<IEnumerable<MoocDTO>> GetAllMoocsAsync()
@@ -75,6 +78,14 @@ public class MoocService : IMoocService
         var mooc = await _moocRepository.GetByIdAsync(id);
         if (mooc == null) return false;
 
+        var examTests = await _examTestService.GetExamTestsByMoocIdAsync(mooc.MoocId);
+        if(examTests.Any())
+        {
+            foreach (var test in examTests)
+            {
+                await _examTestService.DeleteExamTestAsync(test.ExamTestId);
+            }
+        }
         _moocRepository.Delete(mooc);
         await _moocRepository.SaveChangesAsync();
         return true;
@@ -91,5 +102,21 @@ public class MoocService : IMoocService
             CreateDate = m.CreateDate,
             IsPublic = m.IsPublic,
         });
+    }
+
+    public async Task<int> CreateMoocGetIdAsync(CreateMoocDTO createMoocDTO)
+    {
+        var mooc = new Mooc
+        {
+            CourseId = createMoocDTO.CourseId,
+            Description = createMoocDTO.Description,
+            CreateDate = createMoocDTO.CreateDate,
+            IsPublic = createMoocDTO.IsPublic,
+        };
+
+        await _moocRepository.AddAsync(mooc);
+        await _moocRepository.SaveChangesAsync();
+
+        return mooc.MoocId;
     }
 }

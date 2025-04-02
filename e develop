@@ -1,0 +1,28 @@
+[1mdiff --git a/OnlineLearningWebAPI/Program.cs b/OnlineLearningWebAPI/Program.cs[m
+[1mindex 71bacc4..b77f870 100644[m
+[1m--- a/OnlineLearningWebAPI/Program.cs[m
+[1m+++ b/OnlineLearningWebAPI/Program.cs[m
+[36m@@ -9,7 +9,7 @@[m [mbuilder.Services.AddCors(options =>[m
+ {[m
+ 	options.AddPolicy("AllowReactApp", policy =>[m
+ 	{[m
+[31m-		policy.WithOrigins("http://localhost:3000")[m
+[32m+[m		[32mpolicy.WithOrigins("https://eduquest-web-fe.vercel.app/")[m
+ 			  .AllowAnyMethod()[m
+ 			  .AllowAnyHeader()[m
+ 			  .AllowCredentials();[m
+[1mdiff --git a/OnlineLearningWebAPI/appsettings.json b/OnlineLearningWebAPI/appsettings.json[m
+[1mindex 064bae5..042cd28 100644[m
+[1m--- a/OnlineLearningWebAPI/appsettings.json[m
+[1m+++ b/OnlineLearningWebAPI/appsettings.json[m
+[36m@@ -22,8 +22,8 @@[m
+     "Password": "123456"[m
+   },[m
+   "ConnectionStrings": {[m
+[31m-    "DefaultConnection": "server=(localdb)\\local;database=DemoEduQuest_db;uid=sa;pwd=123;TrustServerCertificate=true",[m
+[31m-    //"DefaultConnection": "Server=tcp:trieulq.database.windows.net,1433;Initial Catalog=OnlineLearningDB;Persist Security Info=False;User ID=CloudSAc1561683;Password=0981534055Trieu@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"[m
+[32m+[m[32m    //"DefaultConnection": "server=(localdb)\\local;database=DemoEduQuest_db;uid=sa;pwd=123;TrustServerCertificate=true",[m
+[32m+[m[32m    "DefaultConnection": "Server=tcp:trieulq.database.windows.net,1433;Initial Catalog=OnlineLearningDB;Persist Security Info=False;User ID=CloudSAc1561683;Password=0981534055Trieu@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"[m
+   },[m
+   "JwtConfig": {[m
+     "Secret": "UKlgtQBwfAyxUEE6JusllbQqo44K3gBAZWeT6d4U",[m

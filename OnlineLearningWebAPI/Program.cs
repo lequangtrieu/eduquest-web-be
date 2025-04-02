@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.AspNetCore.OData;
 using OnlineLearningWebAPI.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,7 @@ builder.Services.AddControllers()
 		options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 	});
 
+builder.Services.AddControllers().AddOData(option => option.Filter().Select().OrderBy().Expand().EnableQueryFeatures().SetMaxTop(100));
 
 //// Add services to the container.
 //builder.Services.AddControllers().AddNewtonsoftJson(options =>
@@ -63,7 +65,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowReactApp");
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseODataBatching();
 // Middleware Authentication v� Authorization
 app.UseAuthentication();
 app.UseAuthorization();

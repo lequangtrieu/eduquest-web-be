@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using OnlineLearningWebAPI.DTOs;
 using OnlineLearningWebAPI.DTOs.request.ProfileRequest;
 using OnlineLearningWebAPI.DTOs.response;
@@ -10,7 +11,7 @@ namespace OnlineLearningWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileController : ControllerBase
+    public class ProfileController : ODataController
     {
         private readonly IProfileService _profileService;
 

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Newtonsoft.Json;
 using OnlineLearningWebAPI.DTOs.ExamTestRequest;
 using OnlineLearningWebAPI.DTOs.QuizAnswerRequest;
@@ -14,14 +16,12 @@ namespace OnlineLearningWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CourseController : ControllerBase
+    public class CourseController : ODataController
     {
         private readonly ICourseService _courseService;
         private readonly IExamTestService _examTestService;
         private readonly IQuizService _quizService;
         private readonly IQuizAnswerService _quizAnswerService;
-        private readonly IMoocService _moocService;
-        private readonly ITeacherService _teacherService;
 
         public CourseController(ICourseService courseService,
             IExamTestService examTestService,
@@ -34,15 +34,14 @@ namespace OnlineLearningWebAPI.Controllers
             _examTestService = examTestService;
             _quizService = quizService;
             _quizAnswerService = quizAnswerService;
-            _moocService = moocService;
-            _teacherService = teacherService;
         }
 
         [HttpGet("/api/Courses")]
+        [EnableQuery]
         public async Task<IActionResult> GetAllCourses()
         {
             var courses = await _courseService.GetAllCoursesAsync();
-            return Ok(courses);
+            return Ok(courses.AsQueryable());
         }
 
         [HttpGet("{id}")]
@@ -119,8 +118,6 @@ namespace OnlineLearningWebAPI.Controllers
                         Duration = 0,
                         CreatedBy = createCourseDTO.TeacherId
                     };
-                    Console.WriteLine(formData.Files.Count);
-                    Console.WriteLine(formData.ContainsKey($"ExamTests[{examIndex}].Video"));
                     if (formData.Files.Count > 0 && formData.Files.Any(f => f.Name == $"ExamTests[{examIndex}].Video"))
                     {
 
@@ -159,44 +156,6 @@ namespace OnlineLearningWebAPI.Controllers
                     }
                     examIndex++;
                 }
-
-                //foreach (var iExam in createCourseDTO.ExamTests)
-                //{
-                //    var exam = new CreateExamTestDTO
-                //    {
-                //        MoocId = moocId,
-                //        CreatedBy = createCourseDTO.TeacherId,
-                //        Duration = 0,
-                //        TestName = iExam.TestName
-                //    };
-                //    var examId = await _examTestService.CreateExamTestGetIdAsync(exam);
-                //    Console.WriteLine("Exam ID:" + examId);
-                //    if (iExam.Quizzes.Count > 0)
-                //    {
-                //        foreach (var iQuiz in iExam.Quizzes)
-                //        {
-                //            var quiz = new CreateQuizDTO
-                //            {
-                //                ExamTestId = examId,
-                //                QuizName = iQuiz.QuizName,
-                //                QuizQuestion = iQuiz.QuizQuestion
-                //            };
-                //            var quizId = await _quizService.CreateQuizGetIdAsync(quiz);
-                //            Console.WriteLine("Quiz ID:" + quizId);
-                //            foreach (var iAns in iQuiz.Answers)
-                //            {
-                //                var ans = new CreateQuizAnswerDTO
-                //                {
-                //                    QuizId = quizId,
-                //                    Answer = iAns.Answer,
-                //                    IsCorrect = iAns.IsCorrect
-                //                };
-                //                await _quizAnswerService.CreateAnswerAsync(ans);
-                //            }
-                //        }
-                //    }
-
-                //}
             } catch(Exception ex)
             {
                 return BadRequest("Failed to create course: " + ex.Message);

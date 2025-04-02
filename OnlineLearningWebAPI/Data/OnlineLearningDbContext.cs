@@ -142,16 +142,16 @@ public partial class OnlineLearningDbContext : IdentityDbContext<Account>
 		new CourseCategory { CategoryId = 9, Name = "Database Management" },
 		new CourseCategory { CategoryId = 10, Name = "DevOps" },
 		new CourseCategory { CategoryId = 11, Name = "Blockchain" },
-        new CourseCategory { CategoryId = 12, Name = "Internet of Things (IoT)" },
-        new CourseCategory { CategoryId = 13, Name = "UI/UX Design" },
-        new CourseCategory { CategoryId = 14, Name = "Game Development" },
-        new CourseCategory { CategoryId = 15, Name = "Networking" },
-        new CourseCategory { CategoryId = 16, Name = "Business Intelligence" },
-        new CourseCategory { CategoryId = 17, Name = "Virtual Reality (VR)" },
-        new CourseCategory { CategoryId = 18, Name = "Augmented Reality (AR)" },
-        new CourseCategory { CategoryId = 19, Name = "IT Project Management" },
-        new CourseCategory { CategoryId = 20, Name = "Agile & Scrum" }
-    );
+		new CourseCategory { CategoryId = 12, Name = "Internet of Things (IoT)" },
+		new CourseCategory { CategoryId = 13, Name = "UI/UX Design" },
+		new CourseCategory { CategoryId = 14, Name = "Game Development" },
+		new CourseCategory { CategoryId = 15, Name = "Networking" },
+		new CourseCategory { CategoryId = 16, Name = "Business Intelligence" },
+		new CourseCategory { CategoryId = 17, Name = "Virtual Reality (VR)" },
+		new CourseCategory { CategoryId = 18, Name = "Augmented Reality (AR)" },
+		new CourseCategory { CategoryId = 19, Name = "IT Project Management" },
+		new CourseCategory { CategoryId = 20, Name = "Agile & Scrum" }
+	);
 
 		modelBuilder.Entity<Course>().HasData(
 			new Course
@@ -216,6 +216,11 @@ public partial class OnlineLearningDbContext : IdentityDbContext<Account>
 			{
 				QuizTypeId = 1,
 				TypeName = "Single"
+			},
+			new QuizType
+			{
+				QuizTypeId = 2,
+				TypeName = "Multiple"
 			}
 		);
 

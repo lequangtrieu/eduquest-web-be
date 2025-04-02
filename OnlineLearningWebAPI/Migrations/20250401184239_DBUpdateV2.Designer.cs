@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineLearningWebAPI.Data;
 
@@ -11,9 +12,11 @@ using OnlineLearningWebAPI.Data;
 namespace OnlineLearningWebAPI.Migrations
 {
     [DbContext(typeof(OnlineLearningDbContext))]
-    partial class OnlineLearningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250401184239_DBUpdateV2")]
+    partial class DBUpdateV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,7 +275,7 @@ namespace OnlineLearningWebAPI.Migrations
                             Id = "1",
                             AccessFailedCount = 0,
                             Avatar = "admin.png",
-                            ConcurrencyStamp = "ca92089c-02ec-4863-9915-7d43521683d9",
+                            ConcurrencyStamp = "68e8bf8e-4c86-454e-b15f-9be6e3397466",
                             Email = "admin@example.com",
                             EmailConfirmed = false,
                             IsBan = false,
@@ -280,7 +283,7 @@ namespace OnlineLearningWebAPI.Migrations
                             LockoutEnabled = false,
                             PasswordHash = "Aa1234@",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1fa6774a-21a7-4637-bd77-32c9df586f60",
+                            SecurityStamp = "25f1ad3d-e58f-4c2c-8657-87f8599aa289",
                             TwoFactorEnabled = false,
                             UserName = "admin_user"
                         },
@@ -289,7 +292,7 @@ namespace OnlineLearningWebAPI.Migrations
                             Id = "2",
                             AccessFailedCount = 0,
                             Avatar = "student.png",
-                            ConcurrencyStamp = "45e44a23-ee7a-45a6-b323-13489deef405",
+                            ConcurrencyStamp = "e7ae8ded-2c3a-4219-9fd7-fc1ec23ac019",
                             Email = "student@example.com",
                             EmailConfirmed = false,
                             IsBan = false,
@@ -297,7 +300,7 @@ namespace OnlineLearningWebAPI.Migrations
                             LockoutEnabled = false,
                             PasswordHash = "Aa1234@",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9fb6d767-f8d1-4c1c-ae91-cd7d4d021561",
+                            SecurityStamp = "35f85d80-3181-4cd6-822f-c2e17ba84792",
                             TwoFactorEnabled = false,
                             UserName = "student_user"
                         });
@@ -1096,11 +1099,6 @@ namespace OnlineLearningWebAPI.Migrations
                     b.ToTable("QuizType", (string)null);
 
                     b.HasData(
-                        new
-                        {
-                            QuizTypeId = 1,
-                            TypeName = "Single"
-                        },
                         new
                         {
                             QuizTypeId = 2,

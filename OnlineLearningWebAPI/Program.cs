@@ -10,7 +10,7 @@ builder.Services.AddCors(options =>
 {
 	options.AddPolicy("AllowReactApp", policy =>
 	{
-		policy.WithOrigins("https://eduquest-web-fe.vercel.app")
+		policy.WithOrigins("https://eduquest-web-fe.vercel.app/")
 			  .AllowAnyMethod()
 			  .AllowAnyHeader()
 			  .AllowCredentials();

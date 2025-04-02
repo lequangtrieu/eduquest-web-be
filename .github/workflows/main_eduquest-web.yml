@@ -65,4 +65,8 @@ jobs:
           app-name: 'eduquest-web'
           slot-name: 'Production'
           package: .
-          
+
+      - name: Set Environment Variables (Optional)
+        run: |
+          echo "Setting ChatGPT API Key as an environment variable"
+          echo "CHATGPT_API_KEY=${{ secrets.CHATGPT_API_KEY }}"
